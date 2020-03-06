@@ -119,7 +119,7 @@ class Shop extends React.Component {
           style={{
             position: 'absolute',
             left: '11%',
-            top: '40%',
+            top: '45%',
             border: '1px solid black'
           }}
           to="/battle"
