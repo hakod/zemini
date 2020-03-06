@@ -111,7 +111,7 @@ class Login extends React.Component {
               비밀번호
               <input
                 onChange={this.handleInput('password')}
-                type="text"
+                type="password"
                 name="password"
                 id="password"
               />
