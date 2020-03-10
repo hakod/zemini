@@ -7,8 +7,11 @@ RPG 게임입니다. 턴제 전투를 통해 캐릭터를 성장시킬 수 있�
 ### 소개
 
 Zeminia의 clinet입니다.
-팀 Zemix의 Front-end 두 명이 만들었습니다.
+
+팀 Zemix의 Front-end 두 명이 만들었습니다. (김지훈, 정범진)
+
 페이지를 나누기 위해 React Router가 사용되었습니다.
+
 게임 내 채팅을 위해 Socket.io모듈이 사용되었습니다.
 
 ### 핵심 기능 시연
