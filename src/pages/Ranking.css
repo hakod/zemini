@@ -1,0 +1,12 @@
+th {
+  border: rgb(50, 132, 146) 3px solid;
+  padding-left: 5px;
+}
+
+.label {
+  background: lightblue;
+}
+
+.values {
+  background: lightskyblue;
+}

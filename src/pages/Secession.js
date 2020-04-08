@@ -1,14 +1,13 @@
 /* eslint-disable global-require */
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 
-class Signup extends React.Component {
+class Secession extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      password: ''
-    };
+    this.state = {};
     this.handleInput = this.handleInput.bind(this);
   }
 
@@ -19,7 +18,7 @@ class Signup extends React.Component {
   }
 
   render() {
-    const { signup } = this.props;
+    const { gotoLogin } = this.props;
     const intro = require('../images/character.gif');
     const logo = require('../images/zemix_LOGO.png');
     return (
@@ -54,38 +53,33 @@ class Signup extends React.Component {
           <img src={logo} alt="" />
         </div>
         <h2>Zeminia</h2>
+
         <form
           onSubmit={e => {
-            e.preventDefault();
-            const { password } = this.state;
-            if (
-              password.match(
-                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
-              )
-            ) {
-              fetch('http://13.209.6.41:5001/users/signup', {
-                method: 'POST',
+            if (window.confirm('계정을 정말로 지우시겠습니까?')) {
+              e.preventDefault();
+              fetch('http://13.209.6.41:5001/users/secession', {
+                method: 'DELETE',
                 headers: {
                   'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify(this.state)
-              }).then(data => {
-                if (data.statusText === 'Conflict') {
-                  window.confirm('이미 사용중인 이메일입니다.');
-                }
-                if (data.statusText === 'OK') {
-                  window.confirm('회원가입에 성공했습니다.');
-                  signup();
-                }
-              });
-            } else {
-              alert(
-                '비밀번호 양식대로 작성해주세요. 8자 이상에 영어와 숫자 특수문자가 들어가야합니다.'
-              );
+              })
+                .then(res => {
+                  return res.json();
+                })
+                .then(data => {
+                  console.log(data);
+                  if (data.secessionCheck === 'success') {
+                    window.confirm('탈퇴가 완료되었습니다.');
+                  }
+                  gotoLogin();
+                });
             }
           }}
         >
-          <p>회원가입을 해주세요</p>
+          <p>회원탈퇴</p>
           <div
             style={{
               display: 'flex',
@@ -112,12 +106,21 @@ class Signup extends React.Component {
               />
             </label>
 
-            <button type="submit">회원가입</button>
+            <button type="submit">탈퇴</button>
           </div>
         </form>
-        <Link to="/login">로그인 하기?</Link>
-        <Link to="/secession">회원탈퇴</Link>
-        <Link to="/ranking">랭킹보기</Link>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+            height: '70px'
+          }}
+        >
+          <Link to="/login">로그인 하기?</Link>
+          <Link to="/signup">아이디가 없으신가요?</Link>
+          <Link to="/ranking">랭킹보기</Link>
+        </div>
         {/* <h4>Team Zemix </h4> */}
         <Link
           style={{
@@ -132,8 +135,8 @@ class Signup extends React.Component {
   }
 }
 
-Signup.propTypes = {
-  signup: PropTypes.func.isRequired
+Secession.propTypes = {
+  gotoLogin: PropTypes.func.isRequired
 };
 
-export default Signup;
+export default Secession;

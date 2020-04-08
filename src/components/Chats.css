@@ -1,0 +1,30 @@
+.Chats {
+  background-color: white;
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  width: 250px;
+  height: 600px;
+  border-left: 1px solid black;
+}
+.ChatsTitle {
+  font-size: 20px;
+  text-align: center;
+}
+.ChatsForm {
+  position: absolute;
+  bottom: 0%;
+  border: 1px solid black;
+  width: 220px;
+}
+.ChatsInput {
+  width: 200px;
+}
+.ChatsView {
+  display: flex;
+  flex-direction: column-reverse;
+  border-top: 1px solid black;
+  /* border-bottom: 1px solid black; */
+  height: 360px;
+  overflow: hidden;
+}
