@@ -57,7 +57,7 @@ class Shop extends React.Component {
 
   render() {
     const { items } = this.state;
-    const { buyItem } = this.props;
+    const { buyItem, loseWeapon, character } = this.props;
     // items;
     return (
       <div>
@@ -115,6 +115,24 @@ class Shop extends React.Component {
             );
           })}
         </div>
+        <button
+          type="button"
+          onClick={() => {
+            loseWeapon();
+          }}
+        >
+          무기판매
+        </button>
+        <div
+          style={{
+            position: 'absolute',
+            left: '22%',
+            top: '45%',
+            border: '1px solid black'
+          }}
+        >
+          가지고 있는 골드: {character.gold}
+        </div>
         <Link
           style={{
             position: 'absolute',
@@ -133,7 +151,9 @@ class Shop extends React.Component {
 }
 
 Shop.propTypes = {
-  buyItem: PropTypes.func.isRequired
+  buyItem: PropTypes.func.isRequired,
+  loseWeapon: PropTypes.func.isRequired,
+  character: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
 export default Shop;

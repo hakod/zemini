@@ -99,6 +99,7 @@ class App extends React.Component {
     // this.endBattle = this.endBattle.bind(this);
     this.buyItem = this.buyItem.bind(this);
     this.changeBattlefield = this.changeBattlefield.bind(this);
+    this.loseWeapon = this.loseWeapon.bind(this);
   }
 
   async login() {
@@ -392,7 +393,14 @@ class App extends React.Component {
                 item: prevState.character.item
               }
             }));
-            window.setTimeout(this.win.bind(this), 1000);
+            // console.log(reMonster.monster.monster_name);
+            // if (reMonster.monster.monster_name === '규동몬') {
+            //   alert('축하드립니다, 세상을 구하셨습니다!');
+            // }
+            window.setTimeout(
+              this.win.bind(this, reMonster.monster.monster_name),
+              1000
+            );
           }
         );
       }
@@ -423,6 +431,7 @@ class App extends React.Component {
       );
       const reMonster = this.state;
       if (reMonster.monster.hp <= 0) {
+        // console.log('??');
         this.clearMonster();
         this.setState(
           prevState => ({
@@ -454,7 +463,13 @@ class App extends React.Component {
                 item: prevState.character.item
               }
             }));
-            window.setTimeout(this.win.bind(this), 1000);
+            // if (reMonster.name === '규동몬') {
+            //   alert('히든엔딩:당신은 진정한 영웅입니다!');
+            // }
+            window.setTimeout(
+              this.win.bind(this, reMonster.monster.monster_name),
+              1000
+            );
           }
         );
       }
@@ -557,7 +572,7 @@ class App extends React.Component {
 
   levelUp() {
     const { character } = this.state;
-    console.log('렙업', character);
+    // console.log('렙업', character);
     if (character.exp >= character.level * 3) {
       this.showLog('레벨업!');
       this.setState(prevState => ({
@@ -595,7 +610,7 @@ class App extends React.Component {
         body: JSON.stringify(character)
       });
     } else {
-      character.item = 0;
+      character.item = 1;
       // console.log(character.weapon);
       await fetch('http://13.209.6.41:5001/characters/save', {
         method: 'POST',
@@ -628,11 +643,13 @@ class App extends React.Component {
   //   }, 2000);
   // }
 
-  win() {
-    const { monster } = this.state;
+  win(monsterName) {
+    const { character } = this.state;
     this.levelUp();
-    if (monster.name === '규동몬') {
-      alert('축하드립니다, 세상을 구하셨습니다!');
+    if (character.weapon !== String(5) && monsterName === '규동몬') {
+      alert('히든엔딩: 당신은 진정한 게임의 주인입니다!');
+    } else if (monsterName === '규동몬') {
+      alert('노말엔딩: 축하드립니다, 세상을 구하셨습니다!');
     }
     this.showLog('전투에서 승리하였습니다.');
     // this.clearMonster();
@@ -809,6 +826,29 @@ class App extends React.Component {
     return this;
   }
 
+  loseWeapon() {
+    if (window.confirm('무기를 파시겠습니까?')) {
+      if (window.confirm('돈은 회수되지 않습니다. 정말로 파시겠습니까?')) {
+        this.setState(prevState => ({
+          character: {
+            id: prevState.character.id,
+            character_name: prevState.character.character_name,
+            level: prevState.character.level,
+            maxHp: prevState.character.maxHp,
+            hp: prevState.character.maxHp,
+            att: prevState.character.att,
+            exp: prevState.character.exp,
+            weapon: null,
+            gold: prevState.character.gold,
+            rankScore: prevState.character.rankScore,
+            item: null
+          }
+        }));
+        alert('무기를 버렸습니다.');
+      }
+    }
+  }
+
   render() {
     const {
       redirect,
@@ -893,7 +933,11 @@ class App extends React.Component {
             path="/Shop"
             render={() =>
               isLogin ? (
-                <Shop buyItem={this.buyItem} />
+                <Shop
+                  buyItem={this.buyItem}
+                  loseWeapon={this.loseWeapon}
+                  character={character}
+                />
               ) : (
                 <Redirect to="/battle" />
               )
